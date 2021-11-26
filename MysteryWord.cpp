@@ -3,34 +3,26 @@
 #include <iostream>
 using namespace std;
 
+/*** DECLARATION DES PROTOTYPES DES FONCTIONS ***/
 string askWord();
 string mixUpWord(string word);
 void gameLoop(string word, string mixedUpWord);
 string displayAndGuess(string mixedUpWord);
 
 int main() {
-
-// TODO : - Demander un mot à l'utilisateur
-//        - Mélanger les lettres sa mère
-//        - Afficher le mot mélangé et demander de guess
-//        - Comparer les deux mots
-//        - SI les mots sont pareils ALORS t'as gagné poto --> le jeu s'arrête
-//        - SINON le jeu continue jusqu'à ce que "t'as gagné poto"
-
+/*** APPEL DES FONCTIONS : askWord(), mixUpWord() et gameLoop() ***/
   string word = askWord();
-  // std::cout << "Le mot est : " << word << '\n'; // Test unitaire de askWord()
 
   string mixedUpWord = mixUpWord(word);
-  // std::cout << "Le mot mélangé est : " << mixedUpWord << '\n'; // Test unitaire de mixUpWord()
-
-  // string guessedWord = displayAndGuess(mixedUpWord);
-  // std::cout << "Votre proposition était : " << guessedWord << '\n';
 
   gameLoop(word, mixedUpWord);
 
   return 0;
 }
 
+/*** DECLARATION DES FONCTIONS ***/
+// askWord() permet de demander le mot proposé par le __Joueur1__
+// On crée une variable word qui stockera le mot au moment du cin et on return le mot choisit
 string askWord(){
 
   string word;
@@ -41,14 +33,16 @@ string askWord(){
 
 }
 
+/*************************************************************************************************************************/
+
+// mixUpWord() est la fonction qui permet de mélanger le mot proposé par le __Joueur1__, on lui envoie donc la variable word
+// On définit une variable qui stockera le mot mélangé puis on crée un int qui stockera la taille du mot
+// Dans le for : on fait appel à rand pour tirer une position aléatoire, puis la lettre est ajoutée dans mixedUpWord (var)
+// au premier espace vide et enfin erase efface la position de la lettre tirée aléatoirement pour éviter la repioche
 string mixUpWord(string word){
 
   string mixedUpWord;
   int initialWordSize = word.size();
-
-  // TODO : - Tirer une position aléatoire
-  //        - On ajoute la lettre choisie aléatoirement au premier espace vide (+=)
-  //        - On efface la lettre choisie aléatoirement pour éviter de la re piocher
 
   for (int i(0); i < initialWordSize; i++) {
 
@@ -62,11 +56,16 @@ string mixUpWord(string word){
 
 }
 
+/*************************************************************************************************************************/
+
+// On déclare la fonction "princiale" gameLoop() permettant de comparer la réponse du **Joueur2** et le mot initial (word et mixUpWord) en arguments
+// Dans guessedWord on stocke la proposition du **Joueur2** en passant par la fonction displayAndGuess()
+// Grâce au if, les mots sont comparé en argument (==) et on affiche un message selon la réussite ou non du **Joueur2**
 void gameLoop(string word, string mixedUpWord) {
 
   string guessedWord;
 
-  do {
+  do { // Boucle principale : si le joueur se trompe, la boucle recommence, s'il gagne on sort de la boucle (argumants après while)
 
 
     guessedWord = displayAndGuess(mixedUpWord);
@@ -81,6 +80,10 @@ void gameLoop(string word, string mixedUpWord) {
   } while(word != guessedWord);
 }
 
+/***********************************************************************************************************************/
+
+// displayAndGuess() fait en sorte que l'on puisse récupérer la proposition du **Joueur2**, on lui envoie mixedUpWord en argument
+// La proposition sera stockée dans la variable guess déclarée au préalable
 string displayAndGuess(string mixedUpWord){
   string guess;
 
