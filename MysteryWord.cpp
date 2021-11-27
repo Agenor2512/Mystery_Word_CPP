@@ -1,28 +1,48 @@
+/*
+* / Fichier : MysteryWord.cpp
+* / Auteur : Agenor2512
+* / Dernière modification : 29/11/2021
+*/
+
+/************************************************************************************/
+/*                                 LIBRAIRIES                                       */
+/************************************************************************************/
+
 #include <string>
 #include <cstdlib>
 #include <iostream>
+#include <limits>
 using namespace std;
 
 /*** DECLARATION DES PROTOTYPES DES FONCTIONS ***/
+// Permet de demander le mot à deviner au __Joueur1__
 string askWord();
+
+// Mélange le mot
 string mixUpWord(string word);
+
+// Définit si le jeu s'arrête ou non
 void gameLoop(string word, string mixedUpWord);
+
+// Affiche le mot mélangé et demande la proposition du __Joueur2__
 string displayAndGuess(string mixedUpWord);
 
+void displayMenu();
+void processChoice(char* optionChoice);
+void launchMultiplayerGame();
+
+/* TODO : - Fonction qui affiche le menu
+          - Fonctions multiplayer/singleplayer
+*/
+
 int main() {
-/*** APPEL DES FONCTIONS : askWord(), mixUpWord() et gameLoop() ***/
-  string word = askWord();
 
-  string mixedUpWord = mixUpWord(word);
-
-  gameLoop(word, mixedUpWord);
+  displayMenu();
 
   return 0;
 }
 
 /*** DECLARATION DES FONCTIONS ***/
-// askWord() permet de demander le mot proposé par le __Joueur1__
-// On crée une variable word qui stockera le mot au moment du cin et on return le mot choisit
 string askWord(){
 
   string word;
@@ -33,12 +53,6 @@ string askWord(){
 
 }
 
-/*************************************************************************************************************************/
-
-// mixUpWord() est la fonction qui permet de mélanger le mot proposé par le __Joueur1__, on lui envoie donc la variable word
-// On définit une variable qui stockera le mot mélangé puis on crée un int qui stockera la taille du mot
-// Dans le for : on fait appel à rand pour tirer une position aléatoire, puis la lettre est ajoutée dans mixedUpWord (var)
-// au premier espace vide et enfin erase efface la position de la lettre tirée aléatoirement pour éviter la repioche
 string mixUpWord(string word){
 
   string mixedUpWord;
@@ -56,22 +70,17 @@ string mixUpWord(string word){
 
 }
 
-/*************************************************************************************************************************/
-
-// On déclare la fonction "princiale" gameLoop() permettant de comparer la réponse du **Joueur2** et le mot initial (word et mixUpWord) en arguments
-// Dans guessedWord on stocke la proposition du **Joueur2** en passant par la fonction displayAndGuess()
-// Grâce au if, les mots sont comparé en argument (==) et on affiche un message selon la réussite ou non du **Joueur2**
 void gameLoop(string word, string mixedUpWord) {
 
   string guessedWord;
 
-  do { // Boucle principale : si le joueur se trompe, la boucle recommence, s'il gagne on sort de la boucle (argumants après while)
-
+  do {
 
     guessedWord = displayAndGuess(mixedUpWord);
 
     if (word == guessedWord) {
-      std::cout << "You've WON !" << '\n';
+      std::cout << "You've WON !" << "\n\n";
+      std::cout << "You can start a new game !" << '\n';
     }
     else {
       std::cout << "Die and RETRY." << '\n';
@@ -80,10 +89,7 @@ void gameLoop(string word, string mixedUpWord) {
   } while(word != guessedWord);
 }
 
-/***********************************************************************************************************************/
 
-// displayAndGuess() fait en sorte que l'on puisse récupérer la proposition du **Joueur2**, on lui envoie mixedUpWord en argument
-// La proposition sera stockée dans la variable guess déclarée au préalable
 string displayAndGuess(string mixedUpWord){
   string guess;
 
@@ -93,4 +99,56 @@ string displayAndGuess(string mixedUpWord){
 
   return guess;
 
+}
+
+void displayMenu() {
+  char optionChoice;
+
+  do {
+    std::cout << "==Menu==" << '\n';
+  //std::cout << "1. Singleplayer" << '\n';
+    std::cout << "2. Multiplayer" << '\n';
+    std::cout << "0. Exit" << '\n';
+
+    std::cin >> optionChoice;
+
+    processChoice(&optionChoice);
+
+  } while(optionChoice != '0');
+}
+
+
+void processChoice(char* optionChoice) {
+  bool isInvalidChoice;
+
+  do {
+    isInvalidChoice = false;
+
+    // Vide le buffer d'entrée
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    switch (*optionChoice) {
+      //case '1' :
+          //break;
+      case '2' : // Multiplayer
+          launchMultiplayerGame();
+          break;
+      case '0' : // Exit
+          break;
+      default :
+          std::cout << "Please enter a valid choice." << '\n';
+          std::cin >> *optionChoice;
+          isInvalidChoice = true;
+    }
+  } while (isInvalidChoice);
+}
+
+void launchMultiplayerGame(){
+
+  // Appel de : askWord(), mixUpWord() et gameLoop()
+    string word = askWord();
+
+    string mixedUpWord = mixUpWord(word);
+
+    gameLoop(word, mixedUpWord);
 }
