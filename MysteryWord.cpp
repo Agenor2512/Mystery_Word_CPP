@@ -15,8 +15,10 @@
 using namespace std;
 
 /*** DECLARATION DES PROTOTYPES DES FONCTIONS ***/
+
 // Permet de demander le mot à deviner au __Joueur1__
 string askWord();
+  // TODO : - Fonction pour cacher le mot initial (multi)
 
 // Mélange le mot
 string mixUpWord(string word);
@@ -27,12 +29,18 @@ void gameLoop(string word, string mixedUpWord);
 // Affiche le mot mélangé et demande la proposition du __Joueur2__
 string displayAndGuess(string mixedUpWord);
 
+// Affiche le menu et demande au Joueur de choisir un mode de jeu
 void displayMenu();
+
+// Traite le choix entré par le Joueur
 void processChoice(char* optionChoice);
+
+// Traitement du mode multijoueur
 void launchMultiplayerGame();
 
-/* TODO : - Fonction qui affiche le menu
-          - Fonctions multiplayer/singleplayer
+/* TODO : - Fonction singleplayer
+          - Dictionnaire
+          - Empêcher l'utilisateur d'entrer des int 
 */
 
 int main() {
@@ -43,11 +51,29 @@ int main() {
 }
 
 /*** DECLARATION DES FONCTIONS ***/
+
 string askWord(){
 
   string word;
-  std::cout << "Enter a word : " << '\n';
-  std::cin >> word;
+  int const minWordSize = 2;
+  bool isInvalidWord;
+
+  do {
+    isInvalidWord = false;
+
+    std::cout << "Enter a word : " << '\n';
+    std::cin >> word;
+
+// L'utilisateur ne peut pas entrer un mot trop petit
+    if (word.size() < minWordSize) {
+      isInvalidWord = true;
+
+      std::cout << "You entered too small word. Please enter a " << minWordSize << " or more characters word." << '\n';
+    }
+
+  } while (isInvalidWord);
+
+
 
   return word;
 
@@ -128,8 +154,8 @@ void processChoice(char* optionChoice) {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     switch (*optionChoice) {
-      //case '1' :
-          //break;
+    /*case '1' : // Singleplayer
+          break;*/
       case '2' : // Multiplayer
           launchMultiplayerGame();
           break;
@@ -145,7 +171,7 @@ void processChoice(char* optionChoice) {
 
 void launchMultiplayerGame(){
 
-  // Appel de : askWord(), mixUpWord() et gameLoop()
+  // Appel de askWord(), mixUpWord() et gameLoop()
     string word = askWord();
 
     string mixedUpWord = mixUpWord(word);
