@@ -40,7 +40,7 @@ void launchMultiplayerGame();
 
 /* TODO : - Fonction singleplayer
           - Dictionnaire
-          - Empêcher l'utilisateur d'entrer des int 
+          - Empêcher l'utilisateur d'entrer des int
 */
 
 int main() {
@@ -72,7 +72,6 @@ string askWord(){
     }
 
   } while (isInvalidWord);
-
 
 
   return word;
